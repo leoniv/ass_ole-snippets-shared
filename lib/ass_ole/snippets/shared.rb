@@ -9,6 +9,8 @@ module AssOle
         is_ole_snippet
 
         # Serialize 1C oject to XML string
+        # @param obj [WIN32OLE] 1C object
+        # @return [String]
         def to_xml(obj)
           zxml = newObject 'XMLWriter'
           zxml.SetString
@@ -17,23 +19,39 @@ module AssOle
         end
 
         # Serialize 1C oject to XML file
+        # @param obj [WIN32OLE] 1C object
+        # @param xml_file [#path String] target file path
+        # @return +xml_file+
         def to_xml_file(obj, xml_file)
           zxml = newObject 'XMLWriter'
           _path = xml_file.respond_to?(:path) ? xml_file.path : xml_file
-          zxml.openFile(win_path(_path))
+          zxml.openFile(real_win_path(_path))
           xDTOSerializer.WriteXML zxml, obj
-          zxml.close
           xml_file
+        ensure
+          zxml.close
         end
 
         # Deserialize 1C object from XML srtring
+        # @param xml [String] xml string
+        # @return [WIN32OLE] 1C object
         def from_xml(xml)
-          fail 'FIXME'
+          zxml = newObject 'XMLReader'
+          zxml.SetString xml
+          xDTOSerializer.ReadXml zxml
         end
 
         # Deserialize 1C object from XML file
+        # @param xml_file [#path String] path to xml file
+        # @return [WIN32OLE] 1C object
         def from_xml_file(xml_file)
-          fail 'FIXME'
+          zxml = newObject 'XMLReader'
+          _path = xml_file.respond_to?(:path) ? xml_file.path : xml_file
+          zxml.openFile(real_win_path(_path))
+          obj = xDTOSerializer.ReadXml zxml
+          obj
+        ensure
+          zxml.close
         end
       end
 

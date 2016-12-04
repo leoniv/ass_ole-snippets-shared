@@ -40,4 +40,45 @@ module AssOle::Snippets::SharedTest
       rollBackTransaction if transactionActive
     end
   end
+
+  describe AssOle::Snippets::Shared::Query do
+    like_ole_runtime EXT_RUNTIME
+    include desc
+
+    it '#query' do
+      q = query('select &arg as arg', arg: 'value')
+      q.execute.unload.get(0).arg.must_equal 'value'
+      q.TempTablesManager.must_be_instance_of WIN32OLE
+    end
+
+    it '#temp_tables_manager' do
+      temp_tables_manager.must_be_instance_of WIN32OLE
+    end
+  end
+
+  describe AssOle::Snippets::Shared::XMLSerializer do
+    require 'tempfile'
+    # In external runtime TMP_IB.rm! fail '... /1Cv8.1CD (Errno::EBUSY)'
+    # because external connection keep alive
+    like_ole_runtime THICK_RUNTIME
+    include desc
+
+    attr_reader :xml_file
+    before do
+      @xml_file = Tempfile.new('xml')
+      @xml_file.close
+    end
+
+    after do
+      xml_file.unlink
+    end
+
+    it '#to_xml #from_xml' do
+      from_xml(to_xml('value')).must_equal('value')
+    end
+
+    it '#to_xml_file #from_xml_file' do
+      from_xml_file(to_xml_file('value', xml_file))
+    end
+  end
 end

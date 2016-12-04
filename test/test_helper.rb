@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'simplecov'
 at_exit do
   AssOle::Snippets::SharedTest::Tmp.do_at_exit
 end
@@ -26,4 +27,9 @@ module AssOle::Snippets::SharedTest
     is_ole_runtime :external
   end
   EXT_RUNTIME.run Tmp::TMP_IB
+
+  THICK_RUNTIME = Module.new do
+    is_ole_runtime :thick
+  end
+  THICK_RUNTIME.run Tmp::TMP_IB
 end
