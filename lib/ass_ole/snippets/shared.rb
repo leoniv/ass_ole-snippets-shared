@@ -5,6 +5,9 @@ module AssOle
   module Snippets
     module Shared
       # Snippet for serialize and deserilize 1C objects to xml
+      # @note In external runtime it will be cause of a fail in {InfoBase#rm!}
+      #  '... /1Cv8.1CD (Errno::EBUSY)'  because external connection
+      #  realy keep alive
       module XMLSerializer
         is_ole_snippet
 
