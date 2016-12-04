@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "ass_maintainer-info_base"
 end
