@@ -3,6 +3,7 @@ require 'ass_ole'
 
 module AssOle
   module Snippets
+    # Shared Ole snippets
     module Shared
       # Snippet for serialize and deserilize 1C objects to xml
       # @note In external runtime it will be cause of a fail in {InfoBase#rm!}
@@ -27,8 +28,8 @@ module AssOle
         # @return +xml_file+
         def to_xml_file(obj, xml_file)
           zxml = newObject 'XMLWriter'
-          _path = xml_file.respond_to?(:path) ? xml_file.path : xml_file
-          zxml.openFile(real_win_path(_path))
+          path_ = xml_file.respond_to?(:path) ? xml_file.path : xml_file
+          zxml.openFile(real_win_path(path_))
           xDTOSerializer.WriteXML zxml, obj
           xml_file
         ensure
@@ -49,8 +50,8 @@ module AssOle
         # @return [WIN32OLE] 1C object
         def from_xml_file(xml_file)
           zxml = newObject 'XMLReader'
-          _path = xml_file.respond_to?(:path) ? xml_file.path : xml_file
-          zxml.openFile(real_win_path(_path))
+          path_ = xml_file.respond_to?(:path) ? xml_file.path : xml_file
+          zxml.openFile(real_win_path(path_))
           obj = xDTOSerializer.ReadXml zxml
           obj
         ensure
@@ -64,11 +65,11 @@ module AssOle
 
         # Returns 1C query object
         # @return [WIN32OLE]
-        def query(text, temp_tables_manager = nil, **params)
+        def query(text, temp_tables_manager_ = nil, **params)
           q = newObject('Query', text)
-          q.TempTablesManager = temp_tables_manager || temp_tables_manager()
-          params.each do |k,v|
-            q.SetParameter(k.to_s,v)
+          q.TempTablesManager = temp_tables_manager_ || temp_tables_manager
+          params.each do |k, v|
+            q.SetParameter(k.to_s, v)
           end
           q
         end
@@ -84,6 +85,8 @@ module AssOle
       module Transaction
         is_ole_snippet
 
+        # rubocop:disable Metrics/MethodLength
+
         # @fail [RuntimeError] if nested transaction
         def do_in_transaction(&block)
           fail ArgumentError, 'Block require' unless block_given?
@@ -94,11 +97,13 @@ module AssOle
             r = instance_eval(&block)
             commitTransAction
             r
-          rescue Exception => e
+          rescue StandardError => e
             rollBackTransaction
-            fail e
+            raise e
           end
         end
+
+        # rubocop:enable Metrics/MethodLength
       end
     end
   end
