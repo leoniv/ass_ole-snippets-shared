@@ -105,6 +105,8 @@ module AssOle
 
         # rubocop:enable Metrics/MethodLength
       end
+
+      require 'ass_ole/snippets/shared/array'
     end
   end
 end
