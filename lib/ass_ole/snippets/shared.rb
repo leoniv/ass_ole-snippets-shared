@@ -6,7 +6,7 @@ module AssOle
     # Shared Ole snippets
     module Shared
       # Snippet for serialize and deserilize 1C objects to xml
-      # @note In external runtime it will be cause of a fail in {InfoBase#rm!}
+      # @note In external runtime it will be cause of a fail in +InfoBase#rm!+
       #  '... /1Cv8.1CD (Errno::EBUSY)'  because external connection
       #  realy keep alive
       module XMLSerializer
@@ -87,7 +87,7 @@ module AssOle
 
         # rubocop:disable Metrics/MethodLength
 
-        # @fail [RuntimeError] if nested transaction
+        # @raise [RuntimeError] if nested transaction
         def do_in_transaction(&block)
           fail ArgumentError, 'Block require' unless block_given?
           fail 'Nested transaction is mindless in 1C runtime' if\

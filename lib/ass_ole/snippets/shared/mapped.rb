@@ -3,8 +3,8 @@ module AssOle
     #
     module Shared
       # @api private
-      def self.mapped_mixin
-        Module.new do
+      def self.mapped_mixin(module_)
+        module_.instance_eval do
           define_method :_hash_to_object do |hash_, object_|
             hash_.each_with_object(object_) do |k_v, obj|
               obj.Insert((k_v[0].is_a?(Symbol) ? k_v[0].to_s : k_v[0]), k_v[1])
@@ -16,7 +16,7 @@ module AssOle
 
       # Snippet for worcking with 1C Map obect
       module Map
-        include Shared.mapped_mixin
+        Shared.mapped_mixin self
         # Returns new Map builded from hash
         # @note If +key.is_a? Symbol+ key will be converts to +String+
         # @return [WIN32OLE]
@@ -28,7 +28,7 @@ module AssOle
 
       # Snippet for worcking with 1C Structure obect
       module Structure
-        include Shared.mapped_mixin
+        Shared.mapped_mixin self
         # Returns new Structure builded from hash
         # @note (see Map#map)
         # @return [WIN32OLE]
