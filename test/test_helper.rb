@@ -7,6 +7,7 @@ require 'ass_maintainer/info_base'
 require 'ass_ole'
 require 'ass_ole/snippets/shared'
 require 'minitest/autorun'
+require 'mocha/mini_test'
 
 module AssOle::Snippets::SharedTest
   PLATFORM_REQUIRE = '~> 8.3.9.0'
