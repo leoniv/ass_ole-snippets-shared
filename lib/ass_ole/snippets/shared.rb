@@ -109,6 +109,7 @@ module AssOle
       require 'ass_ole/snippets/shared/mapped'
       require 'ass_ole/snippets/shared/array'
       require 'ass_ole/snippets/shared/binary_data'
+      require 'ass_ole/snippets/shared/value_table'
     end
   end
 end
