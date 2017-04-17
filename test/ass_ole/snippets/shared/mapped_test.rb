@@ -6,11 +6,12 @@ module AssOle::Snippets::SharedTest
     include desc
 
     it '#map {}' do
-      hash_ = {1 => 1, 2 => 2, 3 => 3, 4 => 4}
+      hash_ = {1 => 1, 2 => 2, 3 => 3, 4 => nil}
       m = map hash_
       m.Count.must_equal 4
       hash_.each do |k, v|
-        m.get(k).must_equal v
+        m.get(k).must_equal v unless v.nil?
+        m.get(k).must_be_nil if v.nil?
       end
     end
 
@@ -43,11 +44,12 @@ module AssOle::Snippets::SharedTest
     end
 
     it "#structure {'one' => 1, 'two' => 2, 'three' => 3}" do
-      hash_ = {'one' => 1, 'two' => 2, 'three' => 3}
+      hash_ = {'one' => 1, 'two' => 2, 'three' => nil}
       s = structure hash_
       s.Count.must_equal 3
       hash_.each do |k, v|
-        s.send(k).must_equal v
+        s.send(k).must_equal v unless v.nil?
+        s.send(k).must_be_nil if v.nil?
       end
     end
 

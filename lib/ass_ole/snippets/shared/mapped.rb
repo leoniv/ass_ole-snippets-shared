@@ -7,7 +7,13 @@ module AssOle
         module_.instance_eval do
           define_method :_hash_to_object do |hash_, object_|
             hash_.each_with_object(object_) do |k_v, obj|
-              obj.Insert((k_v[0].is_a?(Symbol) ? k_v[0].to_s : k_v[0]), k_v[1])
+              key = (k_v[0].is_a?(Symbol) ? k_v[0].to_s : k_v[0])
+              value = k_v[1]
+              if value.nil?
+                obj.Insert(key)
+              else
+                obj.Insert(key, value)
+              end
             end
           end
           private :_hash_to_object

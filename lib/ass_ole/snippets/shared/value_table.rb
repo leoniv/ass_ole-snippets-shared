@@ -43,7 +43,7 @@ module AssOle
           def add(**options, &block)
             r = ole.Add
             options.each do |k, v|
-              r.send("#{k}=", v)
+              r.send("#{k}=", v) unless v.nil?
             end
             yield r if block_given?
             r
