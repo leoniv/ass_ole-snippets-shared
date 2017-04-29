@@ -2,7 +2,7 @@ require 'test_helper'
 
 module AssOle::Snippets::SharedTest
   describe AssOle::Snippets::Shared::ValueTable do
-    like_ole_runtime EXT_RUNTIME
+    like_ole_runtime THICK_RUNTIME
     include desc
 
     it '#value_table wrapper with block' do
@@ -26,8 +26,11 @@ module AssOle::Snippets::SharedTest
     end
 
     it '#value_table' do
-      actual = value_table :f1, :f2, :f3
+      actual = value_table :f1, :f2, f2: 'String, Boolean', f3: nil
       actual.Columns.Count.must_equal 3
+      actual.Columns.Get(0).ValueType.Types.Count.must_equal 0
+      actual.Columns.Get(1).ValueType.Types.Count.must_equal 2
+      actual.Columns.Get(2).ValueType.Types.Count.must_equal 0
       actual.Count.must_equal 0
     end
 
@@ -50,6 +53,13 @@ module AssOle::Snippets::SharedTest
       actual.Get(0).f2.must_equal 1
       actual.Get(0).f3.must_be_nil
     end
-  end
 
+    describe AssOle::Snippets::Shared::ValueTable::Columns do
+      it '.type_desc' do
+        self.class.desc.type_desc(%w{String Boolean}, ole_connector).Types.Count.must_equal 2
+        self.class.desc.type_desc('String, Boolean', ole_connector).Types.Count.must_equal 2
+        self.class.desc.type_desc(nil, nil).must_be_nil
+      end
+    end
+  end
 end
