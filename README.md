@@ -19,6 +19,34 @@ Or install it yourself as:
 
     $ gem install ass_ole-snippets-shared
 
+## Example
+
+```ruby
+require 'ass_ole'
+require 'ass_ole/snippets/shared'
+require 'ass_maintainer/info_base'
+
+# External connection runtime
+module ExternalRuntime
+  is_ole_runtime :external
+end
+
+class Worker
+  like_ole_runtime ExternalRuntime
+  include AssOle::Snippets::Shared::Query
+
+  def initialize(connection_string)
+    ole_runtime_get.run AssMaintainer::InfoBase.new('ib_name', connection_string)
+  end
+
+  def select(value)
+    query('select &arg as arg', arg: value).Execute.Unload.Get(0).arg
+  end
+end
+
+Worker.new('File="path"').select('Hello') #=> "Hello"
+```
+
 ## Testing
 
     $ export SIMPLECOV=YES && rake test
