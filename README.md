@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/ass_ole-snippets-shared.svg)](https://badge.fury.io/rb/ass_ole-snippets-shared)
 # AssOle::Snippets::Shared
 
 Shared ole snippets for [ass_ole](https://github.com/leoniv/ass_ole)
