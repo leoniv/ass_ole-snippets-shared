@@ -81,14 +81,37 @@ module AssOle
         end
       end
 
+      # @depricated
+      # @todo remove module in v1.0.0
       # Do in transaction wrapper
       module Transaction
         is_ole_snippet
 
+        def self.depricate
+          Kernel.warn '[DEPRICATION]'\
+            " '#{self.name}` is depricated and will be"\
+            " removed soon. Please use "\
+            '\'AssOle::Snipptes::Shared::InTransactionDo` instead.'\
+        end
+
+        [method(:included), method(:extended)].each do |old_method|
+          name = old_method.name
+          old = "_depricate_#{name}"
+          singleton_class.class_eval {
+            alias_method old, name
+            define_method name do |*args, &block|
+              AssOle::Snippets::Shared::Transaction.depricate
+              send old, *args, &block
+            end
+          }
+        end
+
         # rubocop:disable Metrics/MethodLength
 
+        # @depricated
         # @raise [RuntimeError] if nested transaction
         def do_in_transaction(&block)
+          AssOle::Snippets::Shared::Transaction.depricate
           fail ArgumentError, 'Block require' unless block_given?
           fail 'Nested transaction is mindless in 1C runtime' if\
             transactionActive

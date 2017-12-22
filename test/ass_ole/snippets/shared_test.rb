@@ -39,6 +39,34 @@ module AssOle::Snippets::SharedTest
     after do
       rollBackTransaction if transactionActive
     end
+
+    describe 'DEPRICATION message show' do
+      it 'when included' do
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i))
+        Class.new do
+          include AssOle::Snippets::Shared::Transaction
+        end
+      end
+
+      it 'when extended' do
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i))
+        Module.new do
+          extend AssOle::Snippets::Shared::Transaction
+        end
+      end
+
+      it 'when #do_in_transaction call' do
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i)).twice
+        m = Module.new do
+          extend AssOle::Snippets::Shared::Transaction
+        end
+
+        # Rescue RuntimeError
+        e = proc {
+          m.do_in_transaction
+        }.must_raise ArgumentError
+      end
+    end
   end
 
   describe AssOle::Snippets::Shared::Query do
