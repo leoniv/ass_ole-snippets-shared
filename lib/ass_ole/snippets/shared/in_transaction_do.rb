@@ -2,10 +2,6 @@ module AssOle
   module Snippets
     module Shared
       # Mixin for wrapping execution into 1C transaction.
-      # Object included this must +respond_to? ole_connector+ and returns
-      # +:external+ or +:thick+ 1C OLE connector or includes
-      # +AssOle::Runtimes::App::(Thick|External)+ runtime using:
-      # +like_ole_runtime+ method defined in +AssOle+ gem.
       # @example
       #   #!/sbin/env ruby
       #
@@ -14,12 +10,12 @@ module AssOle
       #
       #   PLATFORM_REQUIRE = '~> 8.3.10.0'
       #
-      #   # External connecion runtime for accounting infobase
+      #   # External connection runtime for accounting infobase
       #   module AccountingRuntime
       #     is_ole_runtime :external
       #   end
       #
-      #   # External connecion runtime for HRM infobase
+      #   # External connection runtime for HRM infobase
       #   module HrmRuntime
       #     is_ole_runtime :external
       #   end

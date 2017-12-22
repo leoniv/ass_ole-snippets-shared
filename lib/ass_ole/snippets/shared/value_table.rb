@@ -95,8 +95,8 @@ module AssOle
 
         # @param columns [Array] +ValueTable+ columns
         # @param columns_with_types [Hash] +ValueTable+ columns with column
-        #  type names [Array] like %w{TypeName OtheTypeName}
-        #  or [String] like 'TypeName, OtheTypeName'
+        #  type names +Array+ like +%w{TypeName OtheTypeName}+
+        #  or +String+ like +'TypeName, OtheTypeName'+
         # @yield [Wrapper]
         # @return [WIN32OLE] 1C +ValueTable+ object
         def value_table(*columns, **columns_with_types, &block)

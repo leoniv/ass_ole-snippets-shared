@@ -42,21 +42,21 @@ module AssOle::Snippets::SharedTest
 
     describe 'DEPRICATION message show' do
       it 'when included' do
-        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i))
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is deprecated}i))
         Class.new do
           include AssOle::Snippets::Shared::Transaction
         end
       end
 
       it 'when extended' do
-        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i))
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is deprecated}i))
         Module.new do
           extend AssOle::Snippets::Shared::Transaction
         end
       end
 
       it 'when #do_in_transaction call' do
-        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is depricated}i)).twice
+        Kernel.expects(:warn).with(regexp_matches(%r{Transaction` is deprecated}i)).twice
         m = Module.new do
           extend AssOle::Snippets::Shared::Transaction
         end

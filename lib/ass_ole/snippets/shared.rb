@@ -3,7 +3,35 @@ require 'ass_ole'
 
 module AssOle
   module Snippets
-    # Shared Ole snippets
+    # Shared Ole snippets.
+    #
+    # Object included snippets must +respond_to? ole_connector+ and returns
+    # 1C OLE connector or includes +AssOle+ runtime using: +like_ole_runtime+
+    # method defined in +ass_ole+ gem.
+    # @example
+    #   require 'ass_ole'
+    #   require 'ass_ole/snippets/shared'
+    #   require 'ass_maintainer/info_base'
+    #
+    #   # External connection runtime
+    #   module ExternalRuntime
+    #     is_ole_runtime :external
+    #   end
+    #
+    #   class Worker
+    #     like_ole_runtime ExternalRuntime
+    #     include AssOle::Snippets::Shared::Query
+    #
+    #     def initialize(connection_string)
+    #       ole_runtime_get.run AssMaintainer::InfoBase.new('ib_name', connection_string)
+    #     end
+    #
+    #     def select(value)
+    #       query('select &arg as arg', arg: value).Execute.Unload.Get(0).arg
+    #     end
+    #   end
+    #
+    #   Worker.new('File="path"').select('Hello') #=> "Hello"
     module Shared
       # Snippet for serialize and deserilize 1C objects to xml
       # @note In external runtime it will be cause of a fail in +InfoBase#rm!+
@@ -81,7 +109,7 @@ module AssOle
         end
       end
 
-      # @depricated
+      # @deprecated Use {InTransactionDo} instead
       # @todo remove module in v1.0.0
       # Do in transaction wrapper
       module Transaction
@@ -89,7 +117,7 @@ module AssOle
 
         def self.depricate
           Kernel.warn '[DEPRICATION]'\
-            " '#{self.name}` is depricated and will be"\
+            " '#{self.name}` is deprecated and will be"\
             " removed soon. Please use "\
             '\'AssOle::Snipptes::Shared::InTransactionDo` instead.'\
         end
@@ -108,7 +136,7 @@ module AssOle
 
         # rubocop:disable Metrics/MethodLength
 
-        # @depricated
+        # @deprecated Use {InTransactionDo#in_transaction} instead
         # @raise [RuntimeError] if nested transaction
         def do_in_transaction(&block)
           AssOle::Snippets::Shared::Transaction.depricate
