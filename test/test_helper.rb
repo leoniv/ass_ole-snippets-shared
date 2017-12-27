@@ -1,8 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'simplecov'
-at_exit do
-  AssOle::Snippets::SharedTest::Tmp.do_at_exit
-end
 require 'ass_maintainer/info_base'
 require 'ass_ole'
 require 'ass_ole/snippets/shared'
@@ -18,11 +15,7 @@ module AssOle::Snippets::SharedTest
     TMP_IB_PATH = File.join TMP_DIR, TMP_IB_NAME
     TMP_IB_CS = cs_file file: TMP_IB_PATH
     TMP_IB = AssMaintainer::InfoBase.new TMP_IB_NAME, TMP_IB_CS, false
-    TMP_IB.make
-
-    def self.do_at_exit
-      TMP_IB.rm! :yes
-    end
+    TMP_IB.rebuild! :yes
   end
 
   FIXT_DIR = File.expand_path('../fixtures', __FILE__)

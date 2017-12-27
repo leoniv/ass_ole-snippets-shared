@@ -162,6 +162,7 @@ module AssOle
       require 'ass_ole/snippets/shared/binary_data'
       require 'ass_ole/snippets/shared/value_table'
       require 'ass_ole/snippets/shared/in_transaction_do'
+      require 'ass_ole/snippets/shared/app_compatibility'
     end
   end
 end
