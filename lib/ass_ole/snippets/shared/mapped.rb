@@ -22,6 +22,7 @@ module AssOle
 
       # Snippet for worcking with 1C Map obect
       module Map
+        is_ole_snippet
         Shared.mapped_mixin self
         # Returns new Map builded from hash
         # @note If +key.is_a? Symbol+ key will be converts to +String+
@@ -34,6 +35,7 @@ module AssOle
 
       # Snippet for worcking with 1C Structure obect
       module Structure
+        is_ole_snippet
         Shared.mapped_mixin self
         # Returns new Structure builded from hash
         # @note (see Map#map)
